@@ -12,18 +12,19 @@ import java.util.List;
 @Table(name = "user")
 public class User implements UserDetails {
 
-    static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "login", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "role", nullable = false)
+    private String role;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
@@ -62,6 +63,10 @@ public class User implements UserDetails {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -69,5 +74,9 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

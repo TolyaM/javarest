@@ -4,8 +4,25 @@ info:
 server:
   port: 8765
 
+zuul:
+  ignoredServices: "*"
+  routes:
+    addresses-service:
+      path: /addresses/**
 
-security:
+zuul:
+  ignoredServices: "*"
+  routes:
+    users-service:
+      path: /users/**
+
+zuul:
+  ignoredServices: "*"
+  routes:
+    projects-service:
+      path: /projects/**
+
+spring:
   oauth2:
     resource:
       userInfoUri: http://localhost:9999/uaa/user
