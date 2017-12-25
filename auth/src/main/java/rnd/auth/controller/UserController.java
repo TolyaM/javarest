@@ -12,7 +12,6 @@ import rnd.auth.service.UserService;
 import java.security.Principal;
 import java.util.Collection;
 
-@RequestMapping(path = "/api")
 @RestController
 public class UserController {
 
@@ -31,7 +30,7 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/users", method = RequestMethod.POST)
     public User saveUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
@@ -62,7 +61,7 @@ public class UserController {
         } else {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
  /*   @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User person) {

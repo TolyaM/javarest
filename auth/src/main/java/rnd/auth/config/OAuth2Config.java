@@ -13,22 +13,23 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import rnd.auth.service.UserService;
 
 @Configuration
 @EnableAuthorizationServer
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
-    @Autowired
-    @Qualifier("userDetailsService")
-    private UserDetailsService userDetailService;
+
+    private final UserService userDetailService;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Value("${acme.oauth.tokenTimeout:3600}")
-    private int expiration;
-
+    public OAuth2Config(UserService userDetailService, AuthenticationManager authenticationManager) {
+        this.userDetailService = userDetailService;
+        this.authenticationManager = authenticationManager;
+    }
+    // password encryptor
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -43,8 +44,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("acme")
-                .secret("acmesecret").accessTokenValiditySeconds(expiration)
-                .authorizedGrantTypes("refresh_token", "password").resourceIds("resource")
+                .secret("acmesecret")
+                .authorizedGrantTypes("authorization_code", "refresh_token", "implicit", "password", "client_credentials")
                 .scopes("server");
     }
 }

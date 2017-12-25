@@ -9,18 +9,19 @@ zuul:
   routes:
     addresses-service:
       path: /addresses/**
+#    users-service:
+#      path: /users/**
+#    projects-service:
+#      path: /projects/**
 
-zuul:
-  ignoredServices: "*"
-  routes:
-    users-service:
-      path: /users/**
-
-zuul:
-  ignoredServices: "*"
-  routes:
-    projects-service:
-      path: /projects/**
+#spring:
+#  oauth2:
+#    client:
+#      accessTokenUri: http://localhost:9999/uaa/oauth/token
+#      userAuthorizationUri: http://localhost:9999/uaa/oauth/authorize
+#      userInfoUri: http://localhost:9999/uaa/user
+#      clientId: acme
+#      clientSecret: acmesecret
 
 spring:
   oauth2:
