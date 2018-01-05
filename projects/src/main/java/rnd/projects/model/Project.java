@@ -13,6 +13,7 @@ import java.io.Serializable;
         allowGetters = true)
 public class Project implements Serializable {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String Project_name;
