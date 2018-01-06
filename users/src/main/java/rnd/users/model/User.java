@@ -18,9 +18,7 @@ public class User implements Serializable {
     private long id;
     private String First_name;
     private String Last_name;
-/*
     private Blob Photo;
-*/
     private String Position;
 
     protected User() {
@@ -31,9 +29,7 @@ public class User implements Serializable {
         this.id = id;
         this.First_name = First_name;
         this.Last_name = Last_name;
-/*
         this.Photo = Photo;
-*/
         this.Position = Position;
     }
 
@@ -61,7 +57,6 @@ public class User implements Serializable {
         Last_name = last_name;
     }
 
-/*
     public Blob getPhoto() {
         return Photo;
     }
@@ -69,7 +64,6 @@ public class User implements Serializable {
     public void setPhoto(Blob photo) {
         Photo = photo;
     }
-*/
 
     public String getPosition() {
         return Position;

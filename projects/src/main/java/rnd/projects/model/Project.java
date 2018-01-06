@@ -12,7 +12,6 @@ import java.io.Serializable;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
 public class Project implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

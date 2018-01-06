@@ -38,4 +38,11 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    public User loadUserByUsernamePassword(String username, String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        encoder.encode(password);
+        return userRepository.findByUsernameAndPassword(username,password);
+    }
+
 }
