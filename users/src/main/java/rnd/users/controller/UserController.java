@@ -1,10 +1,12 @@
 package rnd.users.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import rnd.users.model.User;
+import rnd.users.repository.PhotoRepository;
 import rnd.users.repository.UserRepository;
 
 import javax.validation.Valid;
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PhotoRepository photoRepository;
 
     @Async
     @GetMapping("/users")
@@ -67,5 +72,11 @@ public class UserController {
 
         userRepository.delete(user);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/photo/{url}",  produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getPhotoByUrl(@PathVariable(value = "url") String url){
+        return photoRepository.findOneByUrl(url).getPhoto();
     }
 }

@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),
-                Arrays.asList(new SimpleGrantedAuthority(user.getRole().name())));
+                Arrays.asList(new SimpleGrantedAuthority(user.getRole())));
     }
 
     public User saveUser(User user){
@@ -39,10 +39,10 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User loadUserByUsernamePassword(String username, String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        encoder.encode(password);
-        return userRepository.findByUsernameAndPassword(username,password);
+    public User loadUserByUsernameAndPassword(String username, String password) {
+        User user = userRepository.findUserByUsername(username);
+        user.setPassword(password);
+        return user;
     }
 
 }

@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String Last_name;
     private Blob Photo;
     private String Position;
+    private String photoUrl;
 
     protected User() {
 
@@ -31,6 +32,14 @@ public class User implements Serializable {
         this.Last_name = Last_name;
         this.Photo = Photo;
         this.Position = Position;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public long getId() {

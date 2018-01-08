@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import rnd.authentication.domain.User;
@@ -13,6 +14,7 @@ import rnd.authentication.service.UserService;
 import java.security.Principal;
 import java.util.Collection;
 
+@RestController
 @CrossOrigin
 public class UserController {
 
@@ -23,11 +25,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/user")
+    @ResponseBody
     public Principal user(Principal user){
         return user;
     }
@@ -37,19 +41,15 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @RequestMapping(value = "/user", params = {"username", "password"}, method = RequestMethod.GET)
+    @CrossOrigin
+    @RequestMapping(value = "/user",params = {"login", "password"},method = RequestMethod.GET)
     @ResponseBody
-    public User user(@RequestParam("username") String username, @RequestParam("password") String password){
-        return userService.loadUserByUsernamePassword(username, password);
-    }
-
-    @RequestMapping(value = "/loggeduser", produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<String> findMessagesForUser(Principal principal) {
-        return new ResponseEntity<String>(principal.getName(), HttpStatus.OK);
+    public User user(@RequestParam("login") String login, @RequestParam("password") String password){
+        return userService.loadUserByUsernameAndPassword(login,password);
     }
 
 
-    @RequestMapping(value = "user/{id}", method = RequestMethod.DELETE)
+ /*   @RequestMapping(value = "user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteUser(@PathVariable long id, Principal principal) {
         User currentUser = userRepository.findByUsername(principal.getName());
 
@@ -59,12 +59,12 @@ public class UserController {
         } else {
             return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
         }
-    } 
+    }*/
 
-    @RequestMapping(method = RequestMethod.GET)
+   /* @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Collection<User>> getUsers() {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
-    }
+    }*/
 
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable long id) {
