@@ -19,18 +19,21 @@ public class AddressesController {
     private AddressesRepository addressesRepository;
 
     @Async
+    @CrossOrigin
     @GetMapping("/addresses")
     public List<Addresses> getAllAddresses() {
         return addressesRepository.findAll();
     }
 
     @Async
+    @CrossOrigin
     @PostMapping("/address")
     public Addresses createAddress(@Valid @RequestBody Addresses addresses) {
         return addressesRepository.save(addresses);
     }
 
     @Async
+    @CrossOrigin
     @GetMapping("/address/{id}")
     public ResponseEntity<Addresses> getAddressById(@PathVariable(value = "id") Long addressId) {
         Addresses address = addressesRepository.findOne(addressId);
@@ -41,6 +44,7 @@ public class AddressesController {
     }
 
     @Async
+    @CrossOrigin
     @PutMapping("/address/{id}")
     public ResponseEntity<Addresses> updateAddress(@PathVariable(value = "id") Long noteId,
                                            @Valid @RequestBody Addresses addressDetails) {
@@ -58,6 +62,7 @@ public class AddressesController {
     }
 
     @Async
+    @CrossOrigin
     @DeleteMapping("/address/{id}")
     public ResponseEntity<Addresses> deleteAddress(@PathVariable(value = "id") Long noteId) {
         Addresses addresses = addressesRepository.findOne(noteId);

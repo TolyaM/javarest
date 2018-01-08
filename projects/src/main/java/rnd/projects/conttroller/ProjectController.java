@@ -19,18 +19,21 @@ public class ProjectController {
     private ProjectRepository projectRepository;
 
     @Async
+    @CrossOrigin
     @GetMapping("/projects")
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
     @Async
+    @CrossOrigin
     @PostMapping("/project")
     public Project createProject(@Valid @RequestBody Project project) {
         return projectRepository.save(project);
     }
 
     @Async
+    @CrossOrigin
     @GetMapping("/project/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable(value = "id") Long projectId) {
         Project project = projectRepository.findOne(projectId);
@@ -41,6 +44,7 @@ public class ProjectController {
     }
 
     @Async
+    @CrossOrigin
     @PutMapping("/project/{id}")
     public ResponseEntity<Project> updateProject(@PathVariable(value = "id") Long projectId,
                                            @Valid @RequestBody Project projectDetails) {
@@ -55,6 +59,7 @@ public class ProjectController {
     }
 
     @Async
+    @CrossOrigin
     @DeleteMapping("/project/{id}")
     public ResponseEntity<Project> deleteProject(@PathVariable(value = "id") Long projectId) {
         Project project = projectRepository.findOne(projectId);
