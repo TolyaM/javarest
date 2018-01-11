@@ -16,10 +16,10 @@ zuul:
 
 
 
-#spring:
-#  oauth2:
-#    resource:
-#      userInfoUri: http://localhost:9999/user
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:9999/uaa/user
 
 #security:
 #  oauth2:

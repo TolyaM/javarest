@@ -14,6 +14,9 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/api/**").permitAll();/*.hasRole("ADMIN");*/
+                .antMatchers("/api/**").hasRole("ADMIN");
+     /*   http
+                .csrf()
+                .ignoringAntMatchers("/staff/images//**");*/
     }
 }

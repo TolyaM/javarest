@@ -14,8 +14,8 @@ import rnd.authentication.repository.UserRepository;
 
 import java.util.Arrays;
 
-@Service
 @Transactional
+@Service("userDetailsService")
 public class UserService implements UserDetailsService {
 
     @Autowired

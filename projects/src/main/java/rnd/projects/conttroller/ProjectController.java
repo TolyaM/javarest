@@ -54,6 +54,7 @@ public class ProjectController {
         }
         project.setProject_name(projectDetails.getProject_name());
 
+
         Project updatedProject = projectRepository.save(project);
         return ResponseEntity.ok(updatedProject);
     }
