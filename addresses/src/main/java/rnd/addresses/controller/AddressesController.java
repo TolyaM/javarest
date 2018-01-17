@@ -1,6 +1,7 @@
 package rnd.addresses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,12 @@ public class AddressesController {
         return addressesRepository.save(addresses);
     }
 
+    @CrossOrigin
+    @RequestMapping(value = "/addresses", method = RequestMethod.POST)
+    private ResponseEntity<Addresses> saveAddress(@RequestBody Addresses address){
+        return new ResponseEntity<>(addressesRepository.save(address), HttpStatus.OK);
+    }
+
     @Async
     @CrossOrigin
     @GetMapping("/address/{id}")
@@ -48,14 +55,9 @@ public class AddressesController {
     @Async
     @CrossOrigin
     @PutMapping("/address")
-/*
-    @ResponseBody
-*/
     public ResponseEntity<Addresses> updateAddress(@RequestBody Addresses addressDetails) {
         Addresses addresses = addressesRepository.findOne(addressDetails.getId());
-        if(addresses == null) {
-            return ResponseEntity.notFound().build();
-        }
+
         addresses.setEmail(addressDetails.getEmail());
         addresses.setSkype(addressDetails.getSkype());
         addresses.setPhone(addressDetails.getPhone());
