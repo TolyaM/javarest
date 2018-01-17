@@ -1,31 +1,41 @@
 package rnd.users.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.sql.Blob;
 
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
+
+    @Column
+    @NotNull
+    @Size(min = 2, max = 15)
     private String First_name;
+
+    @Column
+    @NotNull
+    @Size(min = 2, max = 15)
     private String Last_name;
+
+    @Column
+    @NotNull
+    @Size(min = 2, max = 15)
     private String Position;
+
+    @Column
+    @NotNull
     private String photoUrl;
 
     protected User() {
 
     }
 
-    public User(long id, String First_name, String Last_name, Blob Photo, String Position) {
+    public User(long id, String First_name, String Last_name,String Position) {
         this.id = id;
         this.First_name = First_name;
         this.Last_name = Last_name;
@@ -71,7 +81,6 @@ public class User implements Serializable {
     public void setPosition(String position) {
         Position = position;
     }
-
 
     @Override
     public String toString() {

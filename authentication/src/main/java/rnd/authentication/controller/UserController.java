@@ -49,24 +49,6 @@ public class UserController {
         return userService.loadUserByUsernameAndPassword(login,password);
     }
 
-
- /*   @RequestMapping(value = "user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteUser(@PathVariable long id, Principal principal) {
-        User currentUser = userRepository.findByUsername(principal.getName());
-
-        if (currentUser.getId() == id) {
-            userRepository.delete((int) id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
-        }
-    }*/
-
-   /* @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Collection<User>> getUsers() {
-        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
-    }*/
-
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable long id) {
         User person = userRepository.findOne((int) id);

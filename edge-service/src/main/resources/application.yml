@@ -13,7 +13,8 @@ zuul:
       path: /users/**
     projects-service:
       path: /projects/**
-
+    news-service:
+      path: /news/**
 
 
 security:

@@ -3,6 +3,7 @@ package rnd.addresses.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import rnd.addresses.model.Addresses;
 import rnd.addresses.repository.AddressesRepository;
@@ -39,26 +40,29 @@ public class AddressesController {
         Addresses address = addressesRepository.findOne(addressId);
         if(address == null) {
             return ResponseEntity.notFound().build();
+
         }
         return ResponseEntity.ok().body(address);
     }
 
     @Async
     @CrossOrigin
-    @PutMapping("/address/{id}")
-    public ResponseEntity<Addresses> updateAddress(@PathVariable(value = "id") Long noteId,
-                                           @Valid @RequestBody Addresses addressDetails) {
-        Addresses addresses = addressesRepository.findOne(noteId);
+    @PutMapping("/address")
+/*
+    @ResponseBody
+*/
+    public ResponseEntity<Addresses> updateAddress(@RequestBody Addresses addressDetails) {
+        Addresses addresses = addressesRepository.findOne(addressDetails.getId());
         if(addresses == null) {
             return ResponseEntity.notFound().build();
         }
         addresses.setEmail(addressDetails.getEmail());
         addresses.setSkype(addressDetails.getSkype());
         addresses.setPhone(addressDetails.getPhone());
-        addresses.setRoom((int) addressDetails.getRoom());
+        addresses.setRoom(addressDetails.getRoom());
 
-        Addresses updatedUser = addressesRepository.save(addresses);
-        return ResponseEntity.ok(updatedUser);
+        Addresses updatedAddress = addressesRepository.save(addresses);
+        return ResponseEntity.ok(updatedAddress);
     }
 
     @Async

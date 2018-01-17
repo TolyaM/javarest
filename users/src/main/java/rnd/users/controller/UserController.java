@@ -5,17 +5,31 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.supercsv.cellprocessor.Optional;
+import org.supercsv.cellprocessor.ParseLong;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvBeanReader;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 import rnd.users.model.User;
 import rnd.users.repository.PhotoRepository;
 import rnd.users.repository.UserRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 @RequestMapping(path = "/api")
 @RestController
 @CrossOrigin
 public class UserController {
+
+    private static final String[] USERS_HEADER = {"id", "firstName", "lastName"};
 
     @Autowired
     private UserRepository userRepository;
@@ -33,7 +47,7 @@ public class UserController {
     @Async
     @CrossOrigin
     @PostMapping("/user")
-    public User createUser(@Valid @RequestBody User user) {
+    public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
 
@@ -48,11 +62,44 @@ public class UserController {
         return ResponseEntity.ok().body(note);
     }
 
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public void uploadUsers(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        Reader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+        CsvBeanReader reader = new CsvBeanReader(br, CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+        reader.getHeader(false);
+
+        CellProcessor[] cellProcessors = {new Optional(new ParseLong()), null, null, null};
+
+        User user;
+        while( (user = reader.read(User.class, USERS_HEADER, cellProcessors)) != null ) {
+            userRepository.save(user);
+        }
+
+        reader.close();
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void downloadUsers(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"users.csv\"");
+
+        CsvBeanWriter writer = new CsvBeanWriter(response.getWriter(), CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+
+        writer.writeHeader(USERS_HEADER);
+
+        for (User user : userRepository.findAll()) {
+            writer.write(user, USERS_HEADER);
+        }
+
+        writer.close();
+    }
+
     @Async
     @CrossOrigin
     @PutMapping("/user/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long noteId,
-                                           @Valid @RequestBody User userDetails) {
+                                           @RequestBody User userDetails) {
         User user = userRepository.findOne(noteId);
         if(user == null) {
             return ResponseEntity.notFound().build();

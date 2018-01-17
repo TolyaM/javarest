@@ -1,21 +1,34 @@
 package rnd.projects.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "projects")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
 public class Project implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column
+    @Size(min = 2, max = 25)
+    @NotNull
     private String Project_name;
+
+    @Column
+    @NotNull
+    private long userId;
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
     public void Project(){
 

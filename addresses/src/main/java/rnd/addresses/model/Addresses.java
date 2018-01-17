@@ -4,21 +4,35 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "addresses")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
-public class Addresses implements Serializable {
-
+public class Addresses {
         @Id
         @GeneratedValue(strategy= GenerationType.AUTO)
         private long id;
+
+        @Column
+        @NotNull
+        @Size(min = 2, max = 20)
         private String Email;
+
+        @Column
+        @NotNull
+        @Size(min = 2, max = 20)
         private String Skype;
+
+        @Column
+        @NotNull
+        @Size(min = 2, max = 10)
         private String Phone;
+
+        @Column
+        @NotNull
+        @Size(min = 1, max = 10)
         private long Room;
 
         public void Addresses(){
@@ -69,7 +83,7 @@ public class Addresses implements Serializable {
                 return Room;
         }
 
-        public void setRoom(int room) {
+        public void setRoom(long room) {
                 Room = room;
         }
 }

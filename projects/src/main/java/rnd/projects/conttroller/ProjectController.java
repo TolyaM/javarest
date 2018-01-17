@@ -34,9 +34,9 @@ public class ProjectController {
 
     @Async
     @CrossOrigin
-    @GetMapping("/project/{id}")
-    public ResponseEntity<Project> getProjectById(@PathVariable(value = "id") Long projectId) {
-        Project project = projectRepository.findOne(projectId);
+    @GetMapping("/project")
+    public ResponseEntity<Object> getProjectById(@RequestParam("userId") Long userId) {
+        List<Project> project = projectRepository.findAllByUserId(userId);
         if(project == null) {
             return ResponseEntity.notFound().build();
         }
@@ -47,7 +47,7 @@ public class ProjectController {
     @CrossOrigin
     @PutMapping("/project/{id}")
     public ResponseEntity<Project> updateProject(@PathVariable(value = "id") Long projectId,
-                                           @Valid @RequestBody Project projectDetails) {
+                                                 @Valid @RequestBody Project projectDetails) {
         Project project = projectRepository.findOne(projectId);
         if(project == null) {
             return ResponseEntity.notFound().build();
